@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>20 Technik Zamykania Sprzedaży — the company.</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #121635;
+    --navy-light: #1a2050;
+    --red: #DC143C;
+    --white: #FFFFFF;
+    --grey: #8a8fa8;
+    --grey-light: #f0f2f7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── SCREEN MANAGEMENT ── */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* ── INTRO SCREEN ── */
+  #intro {
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .intro-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #0a0e22 0%, #121635 50%, #1e0a14 100%);
+  }
+
+  .intro-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(220,20,60,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(220,20,60,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .intro-sq1 {
+    position: absolute; width: 180px; height: 180px;
+    border: 1px solid rgba(220,20,60,0.3);
+    top: 8%; right: 8%;
+    animation: float 6s ease-in-out infinite;
+  }
+  .intro-sq2 {
+    position: absolute; width: 80px; height: 80px;
+    background: var(--red); opacity: 0.7;
+    bottom: 15%; left: 10%;
+    animation: float 8s ease-in-out infinite reverse;
+  }
+  .intro-sq3 {
+    position: absolute; width: 30px; height: 30px;
+    background: var(--red);
+    top: 30%; right: 22%;
+    animation: float 5s ease-in-out infinite 2s;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-18px); }
+  }
+
+  .intro-content { position: relative; z-index: 2; max-width: 800px; padding: 40px; }
+
+  .brand-logo {
+    font-size: 14px; font-weight: 100; letter-spacing: 3px;
+    color: rgba(255,255,255,0.5); margin-bottom: 60px;
+    text-transform: lowercase;
+  }
+  .brand-logo span { font-weight: 700; color: var(--white); }
+  .brand-logo .dot { color: var(--red); }
+
+  .intro-eyebrow {
+    font-size: 11px; font-weight: 400; letter-spacing: 6px;
+    color: var(--red); text-transform: uppercase; margin-bottom: 24px;
+  }
+
+  .intro-title {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 100; line-height: 1.1; margin-bottom: 16px;
+  }
+  .intro-title strong { font-weight: 700; }
+
+  .intro-sub {
+    font-size: 16px; font-weight: 300; color: var(--grey);
+    line-height: 1.7; margin-bottom: 48px; max-width: 560px; margin-left: auto; margin-right: auto;
+  }
+
+  .intro-meta {
+    display: flex; gap: 48px; justify-content: center;
+    margin-bottom: 56px; flex-wrap: wrap;
+  }
+  .meta-item { text-align: center; }
+  .meta-num { font-size: 32px; font-weight: 100; color: var(--red); }
+  .meta-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--grey); margin-top: 4px; }
+
+  .btn-primary {
+    display: inline-block; padding: 16px 48px;
+    background: var(--red); color: var(--white);
+    font-family: 'Roboto', sans-serif; font-size: 13px;
+    font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+    border: none; cursor: pointer;
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .btn-primary::after {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(255,255,255,0.1);
+    transform: translateX(-100%); transition: transform 0.3s;
+  }
+  .btn-primary:hover::after { transform: translateX(0); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(220,20,60,0.4); }
+
+  .kolb-intro {
+    position: relative; z-index: 2;
+    display: flex; gap: 0; margin-top: 48px;
+    border: 1px solid rgba(255,255,255,0.1); max-width: 700px; margin-left: auto; margin-right: auto;
+  }
+  .kolb-step {
+    flex: 1; padding: 20px 16px; text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    transition: background 0.3s;
+  }
+  .kolb-step:last-child { border-right: none; }
+  .kolb-step:hover { background: rgba(220,20,60,0.08); }
+  .kolb-icon { font-size: 22px; margin-bottom: 8px; }
+  .kolb-name { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--red); font-weight: 700; }
+  .kolb-desc { font-size: 11px; color: var(--grey); margin-top: 4px; line-height: 1.4; }
+
+  /* ── LOGO HOME BUTTON ── */
+  .btn-home {
+    background: none; border: none; cursor: pointer;
+    padding: 0; transition: opacity 0.2s;
+  }
+  .btn-home:hover { opacity: 0.75; }
+  .home-logo {
+    font-size: 13px; font-weight: 100; letter-spacing: 2px;
+    color: var(--white); font-family: 'Roboto', sans-serif;
+  }
+  .home-logo strong { font-weight: 700; }
+  .home-logo .dot { color: var(--red); }
+
+  /* value screen back link */
+  .value-back {
+    position: absolute; top: 32px; left: 48px; z-index: 10;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); cursor: pointer; background: none; border: none;
+    font-family: 'Roboto', sans-serif; transition: color 0.2s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .value-back:hover { color: rgba(255,255,255,0.8); }
+
+  /* cross-reference links inside lesson content */
+  .tech-link {
+    display: inline-flex; align-items: center; gap: 3px;
+    background: rgba(220,20,60,0.09); color: var(--red);
+    border: 1px solid rgba(220,20,60,0.28);
+    padding: 1px 7px; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.5px; cursor: pointer; text-decoration: none;
+    transition: all 0.2s; white-space: nowrap;
+    font-family: 'Roboto', sans-serif; vertical-align: middle;
+  }
+  .tech-link:hover { background: var(--red); color: var(--white); border-color: var(--red); }
+
+  /* ── VALUE SCREEN ── */
+  #value {
+    position: relative; justify-content: center; align-items: center;
+    background: linear-gradient(160deg, #0a0e22 0%, #121635 60%, #1e0814 100%);
+    overflow: hidden;
+  }
+  .value-bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(220,20,60,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(220,20,60,0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .value-sq-tl {
+    position: absolute; top: 0; left: 0;
+    width: 240px; height: 240px;
+    border-right: 1px solid rgba(220,20,60,0.2);
+    border-bottom: 1px solid rgba(220,20,60,0.2);
+  }
+  .value-sq-br {
+    position: absolute; bottom: 0; right: 0;
+    width: 160px; height: 160px;
+    background: rgba(220,20,60,0.06);
+    border-top: 1px solid rgba(220,20,60,0.2);
+    border-left: 1px solid rgba(220,20,60,0.2);
+  }
+  .value-dot {
+    position: absolute; width: 40px; height: 40px;
+    background: var(--red); bottom: 120px; right: 120px;
+  }
+
+  .value-content {
+    position: relative; z-index: 2;
+    max-width: 960px; width: 100%; padding: 60px 48px;
+  }
+
+  .value-header { text-align: center; margin-bottom: 56px; }
+  .value-header .intro-eyebrow { margin-bottom: 16px; }
+  .value-header h2 {
+    font-size: clamp(28px, 4vw, 52px); font-weight: 100; line-height: 1.15; margin-bottom: 16px;
+  }
+  .value-header h2 strong { font-weight: 700; }
+  .value-header p {
+    font-size: 15px; color: var(--grey); font-weight: 300; max-width: 540px; margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .value-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+    margin-bottom: 56px;
+  }
+  @media (max-width: 768px) { .value-grid { grid-template-columns: 1fr; } }
+
+  .value-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 28px 24px; position: relative;
+    transition: all 0.35s; overflow: hidden;
+  }
+  .value-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--red);
+    transform: scaleY(0); transition: transform 0.35s; transform-origin: top;
+  }
+  .value-card:hover { background: rgba(220,20,60,0.06); border-color: rgba(220,20,60,0.25); }
+  .value-card:hover::before { transform: scaleY(1); }
+
+  .vc-num {
+    font-size: 11px; font-weight: 700; letter-spacing: 4px; color: var(--red);
+    text-transform: uppercase; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .vc-num::after {
+    content: ''; flex: 1; height: 1px; background: rgba(220,20,60,0.25);
+  }
+  .vc-title {
+    font-size: 16px; font-weight: 400; color: var(--white);
+    margin-bottom: 10px; line-height: 1.3;
+  }
+  .vc-question {
+    font-size: 13px; font-weight: 300; color: var(--grey);
+    line-height: 1.6; font-style: italic;
+  }
+
+  .value-cta { text-align: center; }
+  .value-cta p {
+    font-size: 13px; color: var(--grey); margin-bottom: 24px;
+    font-weight: 300; letter-spacing: 0.5px;
+  }
+
+  /* ── MAIN APP — WHITE LESSONS ── */
+  #app { flex-direction: column; background: #f5f6fa; }
+
+  .app-header {
+    background: var(--navy);
+    border-bottom: 3px solid var(--red);
+    padding: 0 32px; height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+
+  .header-logo {
+    font-size: 13px; font-weight: 100; letter-spacing: 2px; color: var(--white);
+  }
+  .header-logo span { font-weight: 700; }
+  .header-logo .dot { color: var(--red); }
+
+  .header-nav {
+    display: flex; align-items: center; gap: 24px;
+  }
+  .header-progress {
+    font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 1px;
+  }
+  .header-progress span { color: var(--red); font-weight: 700; }
+
+  .progress-bar-wrap {
+    width: 120px; height: 2px; background: rgba(255,255,255,0.15);
+  }
+  .progress-bar-fill {
+    height: 100%; background: var(--red);
+    transition: width 0.5s ease;
+  }
+
+  .btn-back {
+    background: none; border: 1px solid rgba(255,255,255,0.25);
+    color: rgba(255,255,255,0.7); padding: 8px 16px; font-size: 11px;
+    letter-spacing: 1px; cursor: pointer; font-family: 'Roboto', sans-serif;
+    transition: all 0.3s;
+  }
+  .btn-back:hover { border-color: var(--red); color: var(--white); }
+
+  /* ── OVERVIEW — WHITE ── */
+  #overview { background: var(--white); }
+
+  .overview-header {
+    padding: 48px 48px 32px;
+    border-bottom: 1px solid #e8eaf0;
+    background: var(--white);
+  }
+  .overview-eyebrow {
+    font-size: 10px; letter-spacing: 4px; color: var(--red);
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .overview-title { font-size: 28px; font-weight: 100; color: var(--navy); }
+  .overview-title strong { font-weight: 700; }
+
+  .techniques-grid {
+    padding: 32px 48px;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2px; background: #eceef5;
+  }
+
+  .technique-card {
+    background: var(--white);
+    border: 1px solid #e0e2ec;
+    padding: 24px; cursor: pointer;
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .technique-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--red);
+    transform: scaleY(0); transition: transform 0.3s;
+    transform-origin: bottom;
+  }
+  .technique-card:hover { background: #fdf5f7; border-color: rgba(220,20,60,0.3); box-shadow: 0 4px 20px rgba(220,20,60,0.08); }
+  .technique-card:hover::before { transform: scaleY(1); }
+  .technique-card.completed { opacity: 0.65; }
+  .technique-card.completed::after {
+    content: '✓'; position: absolute; top: 12px; right: 16px;
+    color: var(--red); font-size: 14px; font-weight: 700;
+  }
+
+  .tc-num {
+    font-size: 10px; letter-spacing: 3px; color: var(--red);
+    font-weight: 700; text-transform: uppercase; margin-bottom: 8px;
+  }
+  .tc-name { font-size: 15px; font-weight: 400; margin-bottom: 6px; line-height: 1.3; color: var(--navy); }
+  .tc-group { font-size: 10px; letter-spacing: 1px; color: #8a8fa8; text-transform: uppercase; }
+
+  .group-tag {
+    display: inline-block; padding: 3px 8px; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase; margin-top: 8px;
+  }
+  .group-1 { background: rgba(220,20,60,0.08); color: #c01032; }
+  .group-2 { background: rgba(18,22,53,0.07); color: #121635; border: 1px solid rgba(18,22,53,0.12); }
+  .group-3 { background: rgba(220,20,60,0.15); color: #DC143C; }
+  .group-4 { background: #f0f2f7; color: #5a5f78; border: 1px solid #dde0ec; }
+
+  /* ── TECHNIQUE DETAIL — WHITE ── */
+  #detail { background: var(--white); min-height: calc(100vh - 64px); }
+
+  .detail-hero {
+    background: linear-gradient(135deg, #0a0e22, #1a0810);
+    padding: 56px 64px 48px;
+    position: relative; overflow: hidden;
+    border-bottom: 3px solid var(--red);
+  }
+  .detail-hero-sq {
+    position: absolute; right: 48px; top: 32px;
+    width: 120px; height: 120px;
+    border: 1px solid rgba(220,20,60,0.2);
+  }
+  .detail-hero-sq2 {
+    position: absolute; right: 80px; top: 64px;
+    width: 50px; height: 50px;
+    background: rgba(220,20,60,0.15);
+  }
+
+  .detail-num {
+    font-size: 10px; letter-spacing: 5px; color: var(--red);
+    text-transform: uppercase; margin-bottom: 16px;
+  }
+  .detail-title { font-size: clamp(24px, 3vw, 40px); font-weight: 100; color: var(--white); margin-bottom: 12px; }
+  .detail-title strong { font-weight: 700; }
+  .detail-tagline {
+    font-size: 14px; color: rgba(255,255,255,0.6); font-weight: 300;
+    max-width: 600px; line-height: 1.6;
+  }
+
+  /* ── KOLB TABS — LIGHT ── */
+  .kolb-tabs {
+    display: flex; border-bottom: 1px solid #e0e2ec;
+    background: #f5f6fa; overflow-x: auto;
+  }
+  .kolb-tab {
+    flex: 1; min-width: 160px; padding: 20px 24px;
+    border: none; background: none; cursor: pointer;
+    font-family: 'Roboto', sans-serif; color: #8a8fa8;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    border-bottom: 2px solid transparent; transition: all 0.3s;
+    display: flex; align-items: center; gap: 8px; justify-content: center;
+  }
+  .kolb-tab:hover { color: var(--navy); background: rgba(18,22,53,0.03); }
+  .kolb-tab.active { color: var(--navy); border-bottom-color: var(--red); background: var(--white); font-weight: 700; }
+  .kolb-tab-icon { font-size: 16px; }
+
+  .tab-content { display: none; padding: 48px 64px; animation: fadeIn 0.3s ease; background: var(--white); }
+  .tab-content.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Content blocks — LIGHT VERSIONS */
+  .content-label {
+    font-size: 10px; letter-spacing: 4px; color: var(--red);
+    text-transform: uppercase; margin-bottom: 20px;
+    padding-bottom: 12px; border-bottom: 2px solid rgba(220,20,60,0.15);
+    font-weight: 700;
+  }
+
+  .script-box {
+    background: #fdf5f7;
+    border-left: 3px solid var(--red);
+    padding: 24px 28px; margin: 24px 0;
+    font-size: 15px; line-height: 1.8; font-weight: 300;
+    font-style: italic; color: var(--navy);
+  }
+  .script-box .speaker {
+    font-size: 10px; letter-spacing: 2px; color: var(--red);
+    font-style: normal; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;
+  }
+
+  .scenario-box {
+    background: #f5f6fa;
+    border: 1px solid #e0e2ec;
+    padding: 24px 28px; margin: 24px 0;
+  }
+  .scenario-box h4 {
+    font-size: 10px; letter-spacing: 2px; color: #8a8fa8;
+    text-transform: uppercase; margin-bottom: 12px; font-weight: 700;
+  }
+  .scenario-box p { font-size: 14px; line-height: 1.7; font-weight: 300; color: var(--navy); }
+
+  .reflection-questions { margin: 24px 0; }
+  .rq-item {
+    display: flex; gap: 16px; align-items: flex-start;
+    padding: 16px 0; border-bottom: 1px solid #eceef5;
+  }
+  .rq-num { color: var(--red); font-size: 11px; font-weight: 700; min-width: 20px; margin-top: 2px; }
+  .rq-text { font-size: 14px; font-weight: 300; line-height: 1.6; color: #2a2f52; }
+
+  .insight-card {
+    background: #f5f6fa;
+    border: 1px solid #e0e2ec;
+    border-left: 3px solid var(--navy);
+    padding: 20px 24px; margin: 12px 0;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .insight-icon { font-size: 20px; min-width: 28px; }
+  .insight-text { font-size: 13px; line-height: 1.6; font-weight: 300; color: #2a2f52; }
+  .insight-text strong { color: var(--navy); font-weight: 700; }
+
+  .experiment-task {
+    background: #fff8f9;
+    border: 1px solid rgba(220,20,60,0.2);
+    border-left: 3px solid var(--red);
+    padding: 28px 32px; margin: 24px 0;
+  }
+  .exp-title { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--red); margin-bottom: 16px; font-weight: 700; }
+  .exp-body { font-size: 14px; line-height: 1.7; font-weight: 300; color: var(--navy); }
+  .exp-steps { margin-top: 16px; padding-left: 0; list-style: none; }
+  .exp-steps li {
+    padding: 10px 0 10px 28px; position: relative;
+    font-size: 13px; line-height: 1.6; font-weight: 300;
+    border-bottom: 1px solid rgba(220,20,60,0.08); color: #2a2f52;
+  }
+  .exp-steps li::before {
+    content: '→'; position: absolute; left: 0; color: var(--red); font-weight: 700;
+  }
+
+  .timer-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(220,20,60,0.08); padding: 6px 14px;
+    font-size: 11px; letter-spacing: 1px; color: var(--red); font-weight: 700;
+    margin-bottom: 16px; border: 1px solid rgba(220,20,60,0.2);
+  }
+
+  /* NAVIGATION FOOTER — LIGHT */
+  .detail-footer {
+    padding: 24px 64px;
+    border-top: 1px solid #e0e2ec;
+    display: flex; justify-content: space-between; align-items: center;
+    background: #f5f6fa;
+  }
+
+  .btn-nav {
+    padding: 12px 32px; font-family: 'Roboto', sans-serif;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.3s; border: none;
+  }
+  .btn-nav-prev {
+    background: none; border: 1px solid #c8cad8; color: #8a8fa8;
+  }
+  .btn-nav-prev:hover { border-color: var(--navy); color: var(--navy); }
+  .btn-nav-next {
+    background: var(--red); color: var(--white);
+  }
+  .btn-nav-next:hover { box-shadow: 0 4px 20px rgba(220,20,60,0.35); transform: translateY(-1px); }
+
+  .btn-overview {
+    background: none; border: 1px solid rgba(220,20,60,0.4); color: var(--red);
+    padding: 12px 24px; font-family: 'Roboto', sans-serif; font-size: 10px;
+    letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.3s;
+  }
+  .btn-overview:hover { background: rgba(220,20,60,0.06); }
+
+  .done-check {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 11px; color: #5a5f78; cursor: pointer;
+  }
+  .done-check input { accent-color: var(--red); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .detail-hero, .tab-content, .detail-footer { padding: 32px 24px; }
+    .techniques-grid { padding: 24px; grid-template-columns: 1fr; }
+    .overview-header { padding: 32px 24px; }
+    .app-header { padding: 0 16px; }
+    .value-content { padding: 40px 24px; }
+    .kolb-intro { flex-direction: column; }
+    .kolb-step { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  }
+
+  /* COMPLETION SCREEN */
+  #completion {
+    justify-content: center; align-items: center;
+    text-align: center; background: linear-gradient(135deg, #0a0e22, #1e0a14);
+  }
+  .completion-content { max-width: 600px; padding: 40px; }
+  .completion-sq {
+    width: 80px; height: 80px; background: var(--red);
+    margin: 0 auto 32px; display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: #f0f2f7; }
+  ::-webkit-scrollbar-thumb { background: rgba(220,20,60,0.4); }
+
+  /* Role-play dialog — LIGHT */
+  .dialog { margin: 20px 0; }
+  .dialog-line { display: flex; gap: 12px; margin-bottom: 10px; align-items: flex-start; }
+  .dialog-role {
+    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    min-width: 70px; margin-top: 12px; font-weight: 700;
+  }
+  .dialog-role.klient { color: #8a8fa8; }
+  .dialog-role.ty { color: var(--red); }
+  .dialog-bubble {
+    font-size: 14px; line-height: 1.6; font-weight: 300;
+    padding: 10px 14px; flex: 1; border-radius: 0;
+  }
+  .dialog-bubble.klient { background: #f0f2f7; color: #2a2f52; border-left: 2px solid #c8cad8; }
+  .dialog-bubble.ty { background: #fff0f3; color: var(--navy); border-left: 2px solid var(--red); }
+
+  /* Two column layout */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+
+  .key-phrase {
+    display: inline-block; background: var(--red); color: var(--white);
+    padding: 4px 10px; font-size: 12px; font-weight: 700; margin: 4px 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ INTRO ══════════════ -->
+<div id="intro" class="screen active">
+  <div class="intro-bg"></div>
+  <div class="intro-grid"></div>
+  <div class="intro-sq1"></div>
+  <div class="intro-sq2"></div>
+  <div class="intro-sq3"></div>
+
+  <div class="intro-content">
+    <div class="brand-logo">the <span>company</span><span class="dot">.</span></div>
+    <div class="intro-eyebrow">Program Szkoleniowy — Dyrektorzy CC</div>
+    <h1 class="intro-title">
+      <strong>20 Technik</strong><br>
+      Zamykania Sprzedaży
+    </h1>
+    <p class="intro-sub">
+      Interaktywne szkolenie oparte na modelu Kolba.<br>
+      Nie teoria — doświadczenie, refleksja, wnioski, eksperyment.
+    </p>
+
+    <div class="intro-meta">
+      <div class="meta-item">
+        <div class="meta-num">20</div>
+        <div class="meta-label">Technik</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-num">4</div>
+        <div class="meta-label">Fazy Kolba</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-num">CC</div>
+        <div class="meta-label">Skrojone pod</div>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="showValueScreen()">Rozpocznij szkolenie</button>
+
+    <div class="kolb-intro">
+      <div class="kolb-step">
+        <div class="kolb-icon">🎭</div>
+        <div class="kolb-name">Doświadczenie</div>
+        <div class="kolb-desc">Odegrasz scenkę lub usłyszysz historię</div>
+      </div>
+      <div class="kolb-step">
+        <div class="kolb-icon">🔍</div>
+        <div class="kolb-name">Refleksja</div>
+        <div class="kolb-desc">Co się wydarzyło? Co poczułeś?</div>
+      </div>
+      <div class="kolb-step">
+        <div class="kolb-icon">💡</div>
+        <div class="kolb-name">Wnioski</div>
+        <div class="kolb-desc">Dlaczego to działa? Mechanizm</div>
+      </div>
+      <div class="kolb-step">
+        <div class="kolb-icon">🚀</div>
+        <div class="kolb-name">Eksperyment</div>
+        <div class="kolb-desc">Ćwiczenie do natychmiastowego użycia</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ VALUE SCREEN ══════════════ -->
+<div id="value" class="screen">
+  <div class="value-bg-grid"></div>
+  <div class="value-sq-tl"></div>
+  <div class="value-sq-br"></div>
+  <div class="value-dot"></div>
+  <button class="value-back" onclick="goToIntro()">← Strona główna</button>
+
+  <div class="value-content">
+    <div class="value-header">
+      <div class="intro-eyebrow">Dlaczego Prezesi dołączają do CC</div>
+      <h2>Na co odpowiada<br><strong>the company.</strong></h2>
+      <p>Zanim opanujesz techniki zamykania — musisz wiedzieć, które z 6 potrzeb Twój klient odczuwa najsilniej. To jest Twój gorący punkt.</p>
+    </div>
+
+    <div class="value-grid">
+      <div class="value-card">
+        <div class="vc-num">01</div>
+        <div class="vc-title">Oszczędność czasu</div>
+        <div class="vc-question">Jak CC pomoże mu szybciej podejmować decyzje bez konieczności samodzielnego research'u rynku?</div>
+      </div>
+      <div class="value-card">
+        <div class="vc-num">02</div>
+        <div class="vc-title">Skalowanie</div>
+        <div class="vc-question">Jak rosnąć bez jego osobistego zaangażowania? Jak zbudować maszynę do pozyskiwania klientów przez rekomendacje?</div>
+      </div>
+      <div class="value-card">
+        <div class="vc-num">03</div>
+        <div class="vc-title">Wyjście operacyjne</div>
+        <div class="vc-question">Jak przejść z roli prezesa-operatora do roli właściciela-stratega? Gdzie znaleźć mentorów, którzy już to zrobili?</div>
+      </div>
+      <div class="value-card">
+        <div class="vc-num">04</div>
+        <div class="vc-title">Ekspansja międzynarodowa</div>
+        <div class="vc-question">Konkretne rynki, konkretne bariery, konkretni partnerzy. CC w 35+ krajach — sieć gotowych kontaktów w DACH, UK, US.</div>
+      </div>
+      <div class="value-card">
+        <div class="vc-num">05</div>
+        <div class="vc-title">Dywersyfikacja</div>
+        <div class="vc-question">W co zainwestować nadwyżki kapitału? Jak podejmować lepsze decyzje inwestycyjne opierając się na wiedzy innych prezesów?</div>
+      </div>
+      <div class="value-card">
+        <div class="vc-num">06</div>
+        <div class="vc-title">Sukcesja</div>
+        <div class="vc-question">Jak bezpiecznie przekazać stery? Jak znaleźć odpowiedniego następcę lub przygotować firmę na sprzedaż?</div>
+      </div>
+    </div>
+
+    <div class="value-cta">
+      <p>Każda z 20 technik zamykania jest skrojona pod jedną lub więcej z tych potrzeb.<br>Twoja skuteczność = znalezienie właściwej potrzeby + właściwej techniki.</p>
+      <button class="btn-primary" onclick="startApp()">Przejdź do 20 technik →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ APP ══════════════ -->
+<div id="app" class="screen">
+
+  <header class="app-header">
+    <button class="btn-home" onclick="goToIntro()" title="Strona główna">
+      <span class="home-logo">the <strong>company</strong><span class="dot">.</span></span>
+    </button>
+    <div class="header-nav">
+      <div class="header-progress">Technika <span id="current-num">1</span> / 20</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill" style="width:5%"></div>
+      </div>
+      <button class="btn-back" onclick="showOverview()">Lista technik</button>
+      <button class="btn-back" onclick="showValueScreen()" style="border-color:rgba(220,20,60,0.4);color:#ff8fa0;">Potrzeby CC</button>
+    </div>
+  </header>
+
+  <!-- OVERVIEW -->
+  <div id="overview">
+    <div class="overview-header">
+      <div class="overview-eyebrow">Program szkoleniowy</div>
+      <h2 class="overview-title"><strong>20 Technik</strong> Zamykania — wybierz technikę</h2>
+    </div>
+    <div class="techniques-grid" id="techniques-grid"></div>
+  </div>
+
+  <!-- DETAIL -->
+  <div id="detail" style="display:none">
+    <div class="detail-hero">
+      <div class="detail-hero-sq"></div>
+      <div class="detail-hero-sq2"></div>
+      <div class="detail-num" id="detail-num">TECHNIKA 01</div>
+      <h2 class="detail-title" id="detail-title"></h2>
+      <p class="detail-tagline" id="detail-tagline"></p>
+    </div>
+
+    <div class="kolb-tabs">
+      <button class="kolb-tab active" onclick="switchTab('exp')">
+        <span class="kolb-tab-icon">🎭</span> Doświadczenie
+      </button>
+      <button class="kolb-tab" onclick="switchTab('ref')">
+        <span class="kolb-tab-icon">🔍</span> Refleksja
+      </button>
+      <button class="kolb-tab" onclick="switchTab('con')">
+        <span class="kolb-tab-icon">💡</span> Wnioski
+      </button>
+      <button class="kolb-tab" onclick="switchTab('prac')">
+        <span class="kolb-tab-icon">🚀</span> Eksperyment
+      </button>
+    </div>
+
+    <div id="tab-exp" class="tab-content active"></div>
+    <div id="tab-ref" class="tab-content"></div>
+    <div id="tab-con" class="tab-content"></div>
+    <div id="tab-prac" class="tab-content"></div>
+
+    <div class="detail-footer">
+      <button class="btn-nav btn-nav-prev" id="btn-prev" onclick="navigate(-1)">← Poprzednia</button>
+      <div style="display:flex;gap:16px;align-items:center">
+        <label class="done-check">
+          <input type="checkbox" id="done-check" onchange="markDone()"> Opanowana
+        </label>
+        <button class="btn-overview" onclick="showOverview()">Wszystkie techniki</button>
+      </div>
+      <button class="btn-nav btn-nav-next" id="btn-next" onclick="navigate(1)">Następna →</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════ COMPLETION ══════════════ -->
+<div id="completion" class="screen">
+  <div class="completion-content">
+    <div class="completion-sq">🏆</div>
+    <div class="intro-eyebrow">Szkolenie ukończone</div>
+    <h2 class="intro-title"><strong>Gratulacje!</strong><br>Wszystkie techniki opanowane</h2>
+    <p class="intro-sub">Masz teraz kompletny arsenał 20 technik zamykania sprzedaży. Kluczem jest codzienne ćwiczenie 3-5 ulubionych.</p>
+    <button class="btn-primary" onclick="showValueScreen()" style="margin-top:32px">Przejrzyj ponownie</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// DATA — 20 TECHNIQUES
+// ══════════════════════════════════════════
+const techniques = [
+  {
+    id: 1,
+    num: "01",
+    name: "Nie dzwonię do klientów",
+    group: 1,
+    groupName: "Otwierające",
+    tagline: "Odwróć oczekiwanie klienta. Kiedy wszyscy dzwonią — Ty przestajesz.",
+    exp: `
+      <div class="content-label">Scenka do odegrania — 3 minuty</div>
+      <div class="scenario-box">
+        <h4>Sytuacja</h4>
+        <p>Prowadzisz rozmowę z Prezesem firmy produkcyjnej. Zainteresowany CC, ale jak zwykle odkłada decyzję. Poproś kolegę, żeby zagrał klienta.</p>
+      </div>
+      <div class="dialog">
+        <div class="dialog-line">
+          <div class="dialog-role klient">KLIENT</div>
+          <div class="dialog-bubble klient">„Proszę mi zostawić materiały i zadzwonić za tydzień — jestem teraz bardzo zajęty."</div>
+        </div>
+        <div class="dialog-line">
+          <div class="dialog-role ty">TY</div>
+          <div class="dialog-bubble ty">„Rozumiem. Ale muszę być z Panem szczery — ja nie dzwonię do klientów. Wie Pan wszystko, co trzeba, by podjąć decyzję już teraz. Może Pan po prostu dołączy?"</div>
+        </div>
+        <div class="dialog-line">
+          <div class="dialog-role klient">KLIENT</div>
+          <div class="dialog-bubble klient">„Co? Pan nie dzwoni?"</div>
+        </div>
+        <div class="dialog-line">
+          <div class="dialog-role ty">TY</div>
+          <div class="dialog-bubble ty">„Nie. Nasi najlepsi członkowie dołączają od razu, kiedy widzą wartość. Jeśli Pan widzi — to jest ten moment."</div>
+        </div>
+      </div>
+      <div class="scenario-box">
+        <h4>Wariant dla CC — konkretna sytuacja</h4>
+        <p>Prezes firmy 50+ pracowników, chce „przemyśleć". Masz już 2 spotkania za sobą. To trzecia rozmowa.</p>
+      </div>`,
+    ref: `
+      <div class="content-label">Pytania do refleksji grupowej — 10 minut</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Co poczułeś jako klient, kiedy usłyszałeś „ja nie dzwonię"? Zaskoczenie? Szacunek? Irytację?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Ile razy sam dzwoniłeś do klientów bez efektu? Co to mówi o tej dynamice?</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Jak zareagował partner grający prezesa? Dlaczego właśnie tak?</div></div>
+        <div class="rq-item"><div class="rq-num">4.</div><div class="rq-text">Czy w CC naprawdę możesz stosować tę technikę? Kiedy tak, a kiedy nie?</div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Mechanizm psychologiczny</div>
+      <div class="insight-card"><div class="insight-icon">🧠</div><div class="insight-text"><strong>Odwrócenie ról:</strong> Kiedy sprzedawca mówi „nie dzwonię" — status się odwraca. To klient nagle czuje presję czasu, nie sprzedawca. Psychologia niedoboru — ta sama co w <span class="tech-link" onclick="openTechnique(17)">↗ #18 Odebranie produktu</span>.</div></div>
+      <div class="insight-card"><div class="insight-icon">💼</div><div class="insight-text"><strong>W CC działa, bo:</strong> The Company to ekskluzywna społeczność. Klienci nie powinni czuć, że „musisz ich przekonywać". Dołączają ci, którzy widzą wartość. Połącz z <span class="tech-link" onclick="openTechnique(2)">↗ #03 Obietnica odpowiedzi</span>.</div></div>
+      <div class="insight-card"><div class="insight-icon">⚠️</div><div class="insight-text"><strong>Warunek:</strong> Musisz w to naprawdę wierzyć. Jeśli powiesz to niepewnie — efekt odwrotny. Trenuj, aż brzmi naturalnie.</div></div>
+      <div class="script-box"><div class="speaker">Kluczowe zdanie CC</div>„Do naszej społeczności dołączają Prezesi, którzy sami widzą wartość networku. Nie sprzedajemy — zapraszamy."</div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie: 15 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">Ćwiczenie w parach</div>
+        <div class="exp-body">Każdy z Was odgrywa 2 rundy: raz jako Dyrektor CC, raz jako niezdecydowany Prezes.</div>
+        <ul class="exp-steps">
+          <li>Ustalcie konkretnego klienta (możesz wziąć realną osobę ze swojego pipeline'u)</li>
+          <li>Klient mówi 3 różne wymówki na odłożenie decyzji</li>
+          <li>Dyrektor CC stosuje technikę „nie dzwonię" — bez ugięcia się</li>
+          <li>Po rundzie: omówcie co zadziałało, co brzmiało sztucznie</li>
+          <li>Zamieńcie role i powtórzcie</li>
+        </ul>
+      </div>
+      <div class="scenario-box"><h4>Zadanie domowe</h4><p>Zidentyfikuj 1 klienta, który od 2+ tygodni „będzie dzwonił". Napisz SMS: <em>„Panie Marku, zastanowiłem się — mam zasadę, że nie dzwonię do klientów. Jeśli widzi Pan wartość w networkingu na poziomie Prezesów — odezwij się. Jeśli nie — szanuję. Pozdrawiam."</em></p></div>`
+  },
+  {
+    id: 2,
+    num: "02",
+    name: "Sprzedaż spotkania (10 minut)",
+    group: 1,
+    groupName: "Otwierające",
+    tagline: "Nie sprzedajesz CC przez telefon. Sprzedajesz tylko 10 minut face-to-face.",
+    exp: `
+      <div class="content-label">Ćwiczenie live — zadzwoń teraz</div>
+      <div class="scenario-box"><h4>Zadanie</h4><p>Jeden z uczestników dzwoni do prawdziwego potencjalnego klienta (lub kolega odgrywa rozmowę telefoniczną). Cel: umówić spotkanie używając wyłącznie poniższego skryptu.</p></div>
+      <div class="script-box">
+        <div class="speaker">Skrypt CC — telefon</div>
+        „Dzień dobry, Panie Adamie — mówi [Twoje imię] z The Company. Chciałem zapytać o jedną rzecz: czy jest Pan zainteresowany metodą, dzięki której mógłby Pan pozyskiwać nowych klientów przez rekomendacje bez zimnych telefonów? Potrzebuję 10 minut Pańskiego czasu — sam Pan oceni."
+      </div>
+      <div class="scenario-box"><h4>Zasada</h4><p>Jeśli pyta „ile to kosztuje?" → „Nie o tym teraz rozmawiam — potrzebuję tylko 10 minut, a Pan sam zdecyduje." Nigdy nie mów więcej przez telefon.</p></div>`,
+    ref: `
+      <div class="content-label">Refleksja po ćwiczeniu</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Co kusi, żeby przez telefon opowiedzieć więcej o CC? Dlaczego to błąd?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Kiedy klient pyta o cenę przez telefon — co to naprawdę oznacza?</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Jak różni się Twoja energia, kiedy sprzedajesz „10 minut" vs kiedy sprzedajesz „całe CC"?</div></div>
+        <div class="rq-item"><div class="rq-num">4.</div><div class="rq-text">Ilu spotkań tygodniowo potrzebujesz, żeby zrealizować cel rekrutacyjny?</div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Dlaczego 10 minut działa</div>
+      <div class="insight-card"><div class="insight-icon">📞</div><div class="insight-text"><strong>Przez telefon mózg odrzuca:</strong> Szczegóły CC powiedziane przez telefon brzmią jak każda inna oferta. Klient wyrabia sobie opinię zanim zobaczy wartość. Spotkanie buduje zaufanie.</div></div>
+      <div class="insight-card"><div class="insight-icon">🎯</div><div class="insight-text"><strong>10 minut = brak presji:</strong> Małe zobowiązanie jest zawsze łatwiejsze do przyjęcia. Klient myśli: „10 minut to nic." I oczywiście spotkanie trwa dłużej, gdy jest wartość.</div></div>
+      <div class="insight-card"><div class="insight-icon">👑</div><div class="insight-text"><strong>CC jako premium:</strong> „Pan sam oceni" daje autonomię. Nie nakłaniasz — zapraszasz do oceny. To pozycja eksperta, nie handlowca.</div></div>`,
+    prac: `
+      <div class="timer-badge">⏱ Zadanie: 20 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">Sprint telefoniczny</div>
+        <div class="exp-body">Każdy uczestnik otwiera swój CRM/notatnik i wypisuje 5 kontaktów, z którymi jest w kontakcie ale nie umówił spotkania.</div>
+        <ul class="exp-steps">
+          <li>Napisz swój własny 3-zdaniowy skrypt otwierający (korzyść + 10 minut + autonomia)</li>
+          <li>Skrypt odczytaj na głos 3 razy — popraw co brzmi sztucznie</li>
+          <li>Zadzwoń do min. 1 osoby z listy podczas szkolenia (lub umów się, że zadzwonisz dziś do 18:00)</li>
+          <li>Zanotuj reakcję — co powiedział, gdzie się zatrzymałeś</li>
+        </ul>
+      </div>`
+  },
+  {
+    id: 3,
+    num: "03",
+    name: "Obietnica odpowiedzi",
+    group: 1,
+    groupName: "Otwierające",
+    tagline: "Na początku rozmowy klient obiecuje Ci decyzję. Tak lub nie — ale decyzję.",
+    exp: `
+      <div class="content-label">Scenka — Kontrakt na początku</div>
+      <div class="dialog">
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„Panie Piotrze, zanim zacznę — umówmy się na jedną rzecz. Pokażę Panu, jak inni Prezesi z Pana branży rozwiązali problem pozyskiwania klientów przez sieć CC. Pan mi powie na końcu: tak albo nie. Żadnego 'muszę przemyśleć'. Brzmi fair?"</div></div>
+        <div class="dialog-line"><div class="dialog-role klient">KLIENT</div><div class="dialog-bubble klient">„...no dobra, fair."</div></div>
+      </div>
+      <div class="scenario-box"><h4>A pod koniec, gdy mówi „muszę przemyśleć":</h4><p>„Rozumiem. Ale obiecał mi Pan odpowiedź — tak lub nie. Co Pana powstrzymuje?"</p></div>`,
+    ref: `
+      <div class="content-label">Refleksja</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Dlaczego klienci tak chętnie mówią „fair" na początku? Co to zmienia psychologicznie?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Ile czasu tracisz na klientów, którzy nigdy nie dają odpowiedzi? Policz w godzinach miesięcznie.</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Jakie ryzyko niesie ta technika? Kiedy klient może się poczuć „wmanewrowany"?</div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Mechanizm — spójność</div>
+      <div class="insight-card"><div class="insight-icon">🤝</div><div class="insight-text"><strong>Reguła spójności Cialdiniego:</strong> Ludzie chcą być konsekwentni wobec swoich wcześniejszych deklaracji. Klient, który powiedział „fair" — czuje wewnętrzną presję, żeby dotrzymać słowa.</div></div>
+      <div class="insight-card"><div class="insight-icon">⏰</div><div class="insight-text"><strong>Oszczędność czasu:</strong> Eliminujesz zombie-klientów, którzy „są zainteresowani" ale nigdy nie kupią. To uwalnia czas na prawdziwych decydentów.</div></div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie: 10 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">Napisz swoje zdanie otwierające</div>
+        <div class="exp-body">Każdy uczestnik pisze swoją wersję kontraktu na kartce. Potem odczytuje na głos przed grupą.</div>
+        <ul class="exp-steps">
+          <li>Musi zawierać: wartość dla klienta + prośbę o decyzję + słowo „fair"</li>
+          <li>Musi brzmieć naturalnie dla Ciebie — nie jak skrypt</li>
+          <li>Maksymalnie 2 zdania</li>
+          <li>Grupa ocenia: czy chciałbyś to usłyszeć jako klient?</li>
+        </ul>
+      </div>`
+  },
+  {
+    id: 4,
+    num: "04",
+    name: "Kwalifikacja finansowa",
+    group: 1,
+    groupName: "Otwierające",
+    tagline: "Zanim zaczniesz prezentować — sprawdź czy klient jest gotowy finansowo. Bez ogródek.",
+    exp: `
+      <div class="content-label">Symulacja — pytanie finansowe</div>
+      <div class="script-box">
+        <div class="speaker">Technika demonstracji</div>
+        „Panie Marku, jeśli pokażę Panu społeczność, dzięki której Pańska firma zyska 3-5 nowych kontraktów w roku — czy będzie Pan gotowy podjąć decyzję o inwestycji rzędu [kwota] jeszcze dziś?"
+      </div>
+      <div class="scenario-box"><h4>Jeśli mówi „nie wiem":</h4><p>„A czy mógłby Pan przeznaczyć połowę tej kwoty, jeśli wartość jest pewna?" — Schodzisz stopniowo, aż usłyszysz konkretną liczbę lub wyraźne nie.</p></div>`,
+    ref: `
+      <div class="content-label">Refleksja</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Jak się czujesz, pytając o pieniądze na początku? Skąd ten dyskomfort?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Ile czasu spędziłeś na prezentacjach dla klientów, którzy finalnie powiedzieli „za drogo"? Jaki koszt?</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Jak ta technika chroni Cię przed „złodziejami czasu"?</div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Wnioski</div>
+      <div class="insight-card"><div class="insight-icon">💰</div><div class="insight-text"><strong>Zmiana tematu rozmowy:</strong> Nie rozmawiasz już o tym „czy kupić" — rozmawiasz o tym „ile". Klient mentalnie jest już po zakupie.</div></div>
+      <div class="insight-card"><div class="insight-icon">🏆</div><div class="insight-text"><strong>Filtrowanie klientów:</strong> CC to produkt premium. Prezesi, których stać, nie mają problemu z tą rozmową. Ci, którzy się oburzają — często nie są Twoją grupą docelową.</div></div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie: 15 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">Trening pytania kwalifikacyjnego</div>
+        <ul class="exp-steps">
+          <li>W parach: jeden gra klienta z 4 różnymi odpowiedziami na pytanie finansowe</li>
+          <li>Dyrektor CC ćwiczy zejście do niższej kwoty bez utraty pozycji</li>
+          <li>Ćwicz aż pytanie o pieniądze brzmi komfortowo i naturalnie</li>
+          <li>Cel: 0 zawahania w głosie przy pytaniu o budżet</li>
+        </ul>
+      </div>`
+  },
+  {
+    id: 5,
+    num: "05",
+    name: "Eliminacja wymówki decyzyjnej",
+    group: 1,
+    groupName: "Otwierające",
+    tagline: "\"Muszę skonsultować z żoną/wspólnikiem/CFO\" — pytasz o to zanim zaczniesz.",
+    exp: `
+      <div class="content-label">Scenka</div>
+      <div class="dialog">
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„Panie Krzysztofie, zanim zacznę prezentację — chcę się upewnić, że rozmawiamy we właściwym gronie. Czy jeśli nasza rozmowa okaże się wartościowa, będzie Pan w stanie podjąć decyzję samodzielnie, bez dodatkowych konsultacji?"</div></div>
+        <div class="dialog-line"><div class="dialog-role klient">KLIENT</div><div class="dialog-bubble klient">„No, większe decyzje konsultuję z wspólnikiem."</div></div>
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„Rozumiem. Czy warto więc zaprosić go na to spotkanie? Chciałbym, żebyście obaj mieli pełny obraz — żeby nie tracić Pańskiego czasu na dwa spotkania."</div></div>
+      </div>`,
+    ref: `
+      <div class="content-label">Refleksja</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Ile razy słyszałeś „muszę skonsultować" po świetnej prezentacji? Co czułeś?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Czy „konsultacja" to zawsze prawdziwy powód? Kiedy jest wymówką?</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Jak zmienia się dynamika, gdy zapraszasz wspólnika na pierwsze spotkanie?</div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Wnioski</div>
+      <div class="insight-card"><div class="insight-icon">🎯</div><div class="insight-text"><strong>Uprzedzasz obiekcję:</strong> Klient, który powiedział że może decydować sam — trudniej wycofa się przez „muszę spytać". Zasada spójności działa na Twoją korzyść.</div></div>
+      <div class="insight-card"><div class="insight-icon">👥</div><div class="insight-text"><strong>Dwie opcje:</strong> Albo mówi „tak, decyduję sam" (usuwa wymówkę), albo zaprasza wspólnika (obaj na spotkaniu = lepsza szansa).</div></div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie: 10 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">Burza mózgów</div>
+        <div class="exp-body">Jako grupa: wypisz 5 najczęstszych „konsultantów" których klienci CC wskazują jako powód zwłoki. Dla każdego — napisz zdanie, które eliminuje tę wymówkę zanim padnie.</div>
+      </div>`
+  },
+  {
+    id: 6,
+    num: "06",
+    name: "Gorący punkt",
+    group: 2,
+    groupName: "W trakcie prezentacji",
+    tagline: "Jedna korzyść zamknie sprzedaż. Znajdź ją — i wracaj do niej wielokrotnie.",
+    exp: `
+      <div class="content-label">Ćwiczenie aktywnego słuchania</div>
+      <div class="scenario-box"><h4>Zadanie dla Dyrektorów</h4><p>W parach: jedna osoba przez 3 minuty opowiada o swoim biznesie i problemach. Słuchacz identyfikuje JEDEN gorący punkt — emocjonalną potrzebę, która pojawia się najsilniej.</p></div>
+      <div class="script-box">
+        <div class="speaker">Pytania odkrywające gorący punkt</div>
+        „Gdyby mógł Pan rozwiązać jeden problem biznesowy w tym roku — co by to było?"<br><br>
+        „Co sprawia, że temat wzrostu przez rekomendacje jest dla Pana ważny właśnie teraz?"<br><br>
+        „Gdyby Pan kiedyś dołączył do takiej społeczności — co byłoby dla Pana kluczową korzyścią?"
+      </div>`,
+    ref: `
+      <div class="content-label">Refleksja</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Co odkryłeś jako gorący punkt u swojego partnera? Czy byłeś zaskoczony?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Czy zwykle mówisz klientom CC o wszystkich korzyściach jednocześnie? Jaki to ma efekt?</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Jakie są najczęstsze gorące punkty Prezesów w Twojej branży?</div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Wnioski — 80/20 sprzedaży</div>
+      <div class="insight-card"><div class="insight-icon">🌡️</div><div class="insight-text"><strong>80-90% decyzji zakupowej</strong> zależy od 10-20% korzyści. Znajdziesz ją przez pytania. Nie przez mówienie — przez słuchanie. Używaj <span class="tech-link" onclick="openTechnique(6)">↗ #07 Zamknięcie próbne</span> do sprawdzania temperatury w trakcie.</div></div>
+      <div class="insight-card"><div class="insight-icon">🔄</div><div class="insight-text"><strong>Wracaj wielokrotnie:</strong> Gdy znajdziesz gorący punkt — wracaj do niego w prezentacji. „Wspominał Pan o ekspansji na Niemcy — nasz członek z CC Berlin już to zrobił..."</div></div>
+      <div class="insight-card"><div class="insight-icon">🎯</div><div class="insight-text"><strong>6 potrzeb CC:</strong> Czas, Skalowanie, Wyjście operacyjne, Ekspansja, Dywersyfikacja, Sukcesja. Słuchaj, która boli najbardziej.</div></div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie: 20 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">Mapa gorących punktów</div>
+        <div class="exp-body">Każdy dyrektor wypisuje 5 aktualnych potencjalnych klientów ze swojego pipeline'u. Dla każdego: jaki jest jego gorący punkt? Jeśli nie wiesz — co to mówi o jakości poprzednich rozmów?</div>
+        <ul class="exp-steps">
+          <li>Wypisz klienta i jego gorący punkt (lub „nieznany")</li>
+          <li>Dla każdego „nieznany" — zaplanuj pytanie odkrywające na następne spotkanie</li>
+          <li>Podziel się z grupą: jakie gorące punkty dominują?</li>
+        </ul>
+      </div>`
+  },
+  {
+    id: 7,
+    num: "07",
+    name: "Zamknięcie próbne (test)",
+    group: 2,
+    groupName: "W trakcie prezentacji",
+    tagline: "Przez całą prezentację mierzysz temperaturę sprzedaży. Małe pytania prowadzą do dużego TAK.",
+    exp: `
+      <div class="content-label">Ćwiczenie — mierzenie temperatury</div>
+      <div class="scenario-box"><h4>Zadanie</h4><p>Jeden uczestnik prowadzi 5-minutową prezentację CC. Co 60 sekund MUSI zadać zamknięcie próbne. Reszta grupy notuje: jak klient reaguje na każde pytanie?</p></div>
+      <div class="script-box">
+        <div class="speaker">Pytania próbne CC</div>
+        „Czy taki format spotkań odpowiadałby Pana harmonogramowi?"<br><br>
+        „Czy widzi Pan, jak taki kontakt mógłby przyspieszyć Pańskie wejście na rynek DACH?"<br><br>
+        „Czy tego rodzaju relacje są dla Pana ważne w tej fazie rozwoju firmy?"<br><br>
+        „Czy to, co pokazuję, jest bliskie temu, czego Pan szuka?"
+      </div>`,
+    ref: `
+      <div class="content-label">Refleksja</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Co się dzieje z prezentacją, gdy nie zadajesz pytań próbnych? Jak klient się zachowuje?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Gdy klient powiedział „nie bardzo" na pytanie próbne — co zrobiłeś dalej? Co powinieneś zrobić?</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Jak pytania próbne budują zaangażowanie klienta w rozmowę?</div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Wnioski — nawigacja GPS</div>
+      <div class="insight-card"><div class="insight-icon">🧭</div><div class="insight-text"><strong>GPS sprzedaży:</strong> Zamknięcia próbne to drogowskazy. Pokazują, w którym kierunku iść. Bez nich jedziesz na ślepo. Pytaj o <span class="tech-link" onclick="openTechnique(5)">↗ #06 Gorący punkt</span> — gdy go odkryjesz, pytania próbne będą celniejsze.</div></div>
+      <div class="insight-card"><div class="insight-icon">✅</div><div class="insight-text"><strong>„Nie" to nie koniec:</strong> Na pytanie próbne klient może powiedzieć nie — i to jest ok. Zmienisz kierunek. Chcesz budować serie pozytywnych odpowiedzi? Patrz <span class="tech-link" onclick="openTechnique(8)">↗ #09 Seria TAK</span>.</div></div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie: 15 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">Napisz 10 pytań próbnych dla CC</div>
+        <div class="exp-body">Każdy uczestnik pisze własną listę 10 pytań próbnych, które można wpleść w prezentację CC. Potem w parach: oceniają wzajemnie — czy pytanie jest naturalne? Czy jest za agresywne?</div>
+      </div>`
+  },
+  {
+    id: 8,
+    num: "08",
+    name: "Siła sugestii (wizualizacja)",
+    group: 2,
+    groupName: "W trakcie prezentacji",
+    tagline: "Mówisz tak, jakby klient JUŻ jest członkiem CC. Mózg nie odróżnia wyobraźni od rzeczywistości.",
+    exp: `
+      <div class="content-label">Ćwiczenie wizualizacyjne — 5 minut</div>
+      <div class="scenario-box"><h4>Zadanie prowadzącego</h4><p>Poprowadź grupę przez krótką wizualizację. Poproś, żeby zamknęli oczy.</p></div>
+      <div class="script-box">
+        <div class="speaker">Skrypt wizualizacji</div>
+        „Wyobraź sobie, że jest wtorek rano. Siedzisz przy stole z 30 prezesami firm — podobnych do Twojej lub większych. Jeden z nich właśnie powiedział, że szuka dokładnie takiego produktu jak Twój. Zapisujesz kontakt. Następnego tygodnia to spotkanie zamienia się w kontrakt. Jeden kontakt — jedno realne zlecenie. Jak to wygląda dla Twojej firmy w skali roku?"
+      </div>`,
+    ref: `
+      <div class="content-label">Refleksja</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Co poczułeś podczas wizualizacji? Jakie emocje się pojawiły?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Czy w swoich prezentacjach CC malujesz takie obrazy? Jak to robisz teraz?</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Dlaczego statystyki (300 spotkań, X% rekomendacji) są mniej skuteczne niż jedna konkretna historia?</div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Wnioski — emocje przed logiką</div>
+      <div class="insight-card"><div class="insight-icon">🎨</div><div class="insight-text"><strong>Badania U. Chicago:</strong> Decyzja o zakupie zależy przede wszystkim od tego, jak klient wyobraża sobie swoje emocje po zakupie. Nie od ceny — od wyobraźni.</div></div>
+      <div class="insight-card"><div class="insight-icon">📸</div><div class="insight-text"><strong>Ożywione wyobrażenia CC:</strong> „Wyobraź sobie, że Prezes firmy XYZ z Niemiec siedzi obok Pana na naszym spotkaniu. Pan pierwszy do niego zagaduje. Tydzień później jest kontrakt."</div></div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie: 20 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">Napisz swoją wizualizację CC</div>
+        <div class="exp-body">Każdy uczestnik pisze 3-5 zdaniową wizualizację skrojoną pod swój rynek i swoją grupę docelową klientów. Potem czyta ją na głos — grupa ocenia siłę emocjonalną.</div>
+        <ul class="exp-steps">
+          <li>Musi być w II osobie (Ty, Pan/Pani)</li>
+          <li>Musi zawierać konkretne detale (branża, sytuacja, efekt)</li>
+          <li>Musi wywoływać emocję — nie opisywać faktów</li>
+        </ul>
+      </div>`
+  },
+  {
+    id: 9,
+    num: "09",
+    name: "Seria TAK",
+    group: 2,
+    groupName: "W trakcie prezentacji",
+    tagline: "Im więcej razy klient mówi TAK — tym bardziej chce kupić. Buduj serię małych zgód.",
+    exp: `
+      <div class="content-label">Scenka — budowanie serii TAK</div>
+      <div class="dialog">
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„Prowadzi Pan firmę od ponad 5 lat, prawda?"</div></div>
+        <div class="dialog-line"><div class="dialog-role klient">KLIENT</div><div class="dialog-bubble klient">„Tak."</div></div>
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„I zależy Panu, żeby firma rosła bez konieczności codziennego angażowania się w sprzedaż?"</div></div>
+        <div class="dialog-line"><div class="dialog-role klient">KLIENT</div><div class="dialog-bubble klient">„Tak, oczywiście."</div></div>
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„Rekomendacje od zaufanych partnerów to dla Pana wiarygodniejsze leady niż zimne telefony?"</div></div>
+        <div class="dialog-line"><div class="dialog-role klient">KLIENT</div><div class="dialog-bubble klient">„Zdecydowanie tak."</div></div>
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„To może zaczynamy?"</div></div>
+      </div>`,
+    ref: `
+      <div class="content-label">Refleksja</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Po ilu TAK poczułeś jako klient, że trudno powiedzieć nie na końcu?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Jak dobierać pytania, żeby prowadząc do TAK nie brzmiały manipulacyjnie?</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Co się dzieje, kiedy klient mówi NIE na jedno z pytań w serii? Jak reagujesz?</div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Wnioski — momentum</div>
+      <div class="insight-card"><div class="insight-icon">🎢</div><div class="insight-text"><strong>Każde TAK = +3°C:</strong> Każde NIE = -5°C. Zadawaj pytania na które znasz odpowiedź — zbudowane na wiedzy o kliencie. Seria TAK prowadzi naturalnie do <span class="tech-link" onclick="openTechnique(9)">↗ #10 Zamknięcia zapraszającego</span>.</div></div>
+      <div class="insight-card"><div class="insight-icon">🔑</div><div class="insight-text"><strong>Pytania muszą być prawdziwe:</strong> Seria TAK oparta na rzeczywistych przekonaniach klienta buduje zaufanie. Manipulacyjna seria — niszczy. Odrabiaj lekcje przed spotkaniem.</div></div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie: 15 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">Napisz serię 7 pytań TAK dla CC</div>
+        <div class="exp-body">Każdy uczestnik pisze sekwencję 7 pytań TAK kończącą się zaproszeniem do dołączenia do CC. Ostatnie pytanie musi być zamknięciem zakupu.</div>
+        <ul class="exp-steps">
+          <li>Pierwsze 3 pytania: ogólne fakty (łatwe TAK)</li>
+          <li>Kolejne 3: wartości i potrzeby klienta</li>
+          <li>Ostatnie: zaproszenie do CC</li>
+          <li>Przetestuj na partnerze — zmierz czas i temperaturę</li>
+        </ul>
+      </div>`
+  },
+  {
+    id: 10,
+    num: "10",
+    name: "Zamknięcie zapraszające",
+    group: 3,
+    groupName: "Zamknięcia właściwe",
+    tagline: "Nie sprzedajesz — zapraszasz. Jedno zdanie, które usuwa presję zakupu.",
+    exp: `
+      <div class="content-label">Ćwiczenie — energia zaproszenia vs. sprzedaży</div>
+      <div class="scenario-box"><h4>Ćwiczenie w parach</h4><p>Runda 1: Zakończ prezentację zdaniem sprzedażowym. Runda 2: Zakończ dokładnie to samo zdaniem zapraszającym. Klient ocenia różnicę w odczuciu.</p></div>
+      <div class="script-box">
+        <div class="speaker">Wersja sprzedażowa (ŹLE)</div>
+        „To co, podpisujemy umowę?"
+      </div>
+      <div class="script-box">
+        <div class="speaker">Wersja zapraszająca (DOBRZE)</div>
+        „Czy do tej pory wszystko wydaje się Panu sensowne? To może Pan po prostu dołączy — zobaczy Pan sam jak to działa."
+      </div>`,
+    ref: `
+      <div class="content-label">Refleksja</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Jaką różnicę poczułeś jako klient między tymi dwoma wersjami?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Dlaczego „dołączy Pan" brzmi lepiej niż „kupi Pan"? Co zmienia to słowo?</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Kiedy jest właściwy moment na zaproszenie? Po czym poznajesz, że klient jest gotowy?</div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Wnioski</div>
+      <div class="insight-card"><div class="insight-icon">🚪</div><div class="insight-text"><strong>Zaproszenie = niskie ryzyko:</strong> „Dołączyć" kojarzy się ze wspólnotą, nie z wydawaniem pieniędzy. Dla Prezesa CC to kluczowe — kupuje przynależność, nie usługę. Najsilniej działa po <span class="tech-link" onclick="openTechnique(19)">↗ #20 Podsumowaniu</span>.</div></div>
+      <div class="insight-card"><div class="insight-icon">💡</div><div class="insight-text"><strong>Warianty dla CC:</strong> „Może Pan nas wypróbuje", „Może Pan dołączy do grupy", „Może Pan przyjdzie na pierwsze spotkanie". Każde niższy próg niż „kupi Pan". Gdy klient nadal waha się — patrz <span class="tech-link" onclick="openTechnique(18)">↗ #19 Szczeniaczek</span>.</div></div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie: 10 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">5 wersji zaproszenia</div>
+        <div class="exp-body">Każdy uczestnik pisze 5 różnych zdań zapraszających dostosowanych do 5 różnych typów klientów CC (Prezes-introwertyk, Prezes agresywny, Prezes nieufny, Prezes zajęty, Prezes analityczny).</div>
+      </div>`
+  },
+  {
+    id: 11,
+    num: "11",
+    name: "Właściwy moment na cenę",
+    group: 3,
+    groupName: "Zamknięcia właściwe",
+    tagline: "Cena podana za wcześnie zabija sprzedaż. Podana w odpowiednim momencie — finalizuje ją.",
+    exp: `
+      <div class="content-label">Symulacja — dwa scenariusze</div>
+      <div class="scenario-box"><h4>Scenariusz A (źle)</h4><p>Prezentacja CC. Po 2 minutach klient pyta: „A ile to kosztuje?" Dyrektor CC podaje cenę.</p></div>
+      <div class="scenario-box"><h4>Scenariusz B (dobrze)</h4><p>To samo pytanie. Dyrektor CC: „Zanim o tym porozmawiamy — chcę Panu pokazać, dlaczego Prezesi płacą tę kwotę z radością. Czy mogę?"</p></div>
+      <div class="scenario-box"><h4>Zadanie</h4><p>W parach: odegrajcie oba scenariusze. Klient podaje cenę reakcję po każdym. Dyskusja: co się różni?</p></div>`,
+    ref: `
+      <div class="content-label">Refleksja</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Kiedy klient pyta o cenę na początku — czego naprawdę szuka? Informacji czy wymówki?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Jak czujesz się, odkładając cenę? Czego się obawiasz?</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Po ilu minutach prezentacji klient jest gotowy usłyszeć cenę CC?</div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Wnioski</div>
+      <div class="insight-card"><div class="insight-icon">💎</div><div class="insight-text"><strong>Wartość przed ceną:</strong> Cena jest akceptowalna tylko gdy klient widzi wartość. To jak jedzenie deseru przed zupą — nie działa.</div></div>
+      <div class="insight-card"><div class="insight-icon">🎯</div><div class="insight-text"><strong>Odpowiedź na pytanie o cenę:</strong> „To zależy od pakietu. Zanim o tym porozmawiamy — chcę Panu pokazać co dostaje Pan za tę inwestycję. Można?"</div></div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie: 10 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">Twoja odpowiedź na pytanie o cenę</div>
+        <div class="exp-body">Napisz 2-3 zdania, które odkładają cenę i budują wartość. Przetestuj na partnerze — jak on reaguje? Jak długo możesz odkładać cenę zanim klient traci cierpliwość?</div>
+      </div>`
+  },
+  {
+    id: 12,
+    num: "12",
+    name: "Załóżmy, że...",
+    group: 3,
+    groupName: "Zamknięcia właściwe",
+    tagline: "Usuwasz obiekcję ze stołu — tymczasowo. I pytasz: a gdyby tego problemu nie było?",
+    exp: `
+      <div class="content-label">Trening obiekcji</div>
+      <div class="scenario-box"><h4>Zasada</h4><p>Klient zgłasza obiekcję. Zamiast walczyć z nią — mówisz „załóżmy że..." i sprawdzasz, czy to jedyna bariera.</p></div>
+      <div class="dialog">
+        <div class="dialog-line"><div class="dialog-role klient">KLIENT</div><div class="dialog-bubble klient">„Cena jest za wysoka dla mnie teraz."</div></div>
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„Rozumiem. Załóżmy, że cena nie stanowi problemu — że możemy dopasować warunki. Czy wtedy widziałby Pan siebie w tej społeczności?"</div></div>
+        <div class="dialog-line"><div class="dialog-role klient">KLIENT</div><div class="dialog-bubble klient">„No... tak, wtedy tak."</div></div>
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„Świetnie. To porozmawiajmy o tym, co możemy zrobić z ceną."</div></div>
+      </div>`,
+    ref: `
+      <div class="content-label">Refleksja</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Co się dzieje z obiekcją klienta, gdy pytasz „załóżmy że"? Dlaczego działa?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Kiedy klient odpowiada „nie, i tak bym nie kupił" — co to oznacza?</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Jakie obiekcje w CC najczęściej próbujesz pokonać zamiast je odsunąć?</div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Wnioski</div>
+      <div class="insight-card"><div class="insight-icon">🧩</div><div class="insight-text"><strong>Izolacja obiekcji:</strong> Dowiadujesz się czy obiekcja jest prawdziwa czy wymówką. Jeśli klient przy „załóżmy że" mówi TAK — możesz rozwiązać ten jeden problem używając <span class="tech-link" onclick="openTechnique(12)">↗ #13 Ostry kąt</span>. Jeśli NIE — szukaj głębiej techniką <span class="tech-link" onclick="openTechnique(14)">↗ #15 Zamiana miejsc</span>.</div></div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie: 15 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">Mapa obiekcji CC</div>
+        <div class="exp-body">Jako grupa wypisz 8 najczęstszych obiekcji klientów CC. Dla każdej sformułuj odpowiedź „załóżmy że...". Przetestuj w parach.</div>
+      </div>`
+  },
+  {
+    id: 13,
+    num: "13",
+    name: "Ostry kąt",
+    group: 3,
+    groupName: "Zamknięcia właściwe",
+    tagline: "Klient stawia warunek. Ty go spełniasz — i pytasz: to w takim razie decydujemy?",
+    exp: `
+      <div class="content-label">Scenka — spełnij warunek i zamknij</div>
+      <div class="dialog">
+        <div class="dialog-line"><div class="dialog-role klient">KLIENT</div><div class="dialog-bubble klient">„Potrzebuję kontaktów z sektora IT — czy macie takich członków?"</div></div>
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„Gdyby pokazał Panu konkretnych 3 prezesów z IT w naszej grupie, którzy mogą być dla Pana wartościowi — dołączyłby Pan?"</div></div>
+        <div class="dialog-line"><div class="dialog-role klient">KLIENT</div><div class="dialog-bubble klient">„Tak, w takim przypadku tak."</div></div>
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„Dobrze. Pozwoli Pan, że zadzwonię do nich teraz — przedstawię Pana, żeby wiedział Pan z kim będzie rozmawiał już od pierwszego spotkania."</div></div>
+      </div>`,
+    ref: `
+      <div class="content-label">Refleksja</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Co się stało po pytaniu „gdyby pokazał Panu..."? Jak zmieniła się pozycja klienta?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Ile warunków stawianych przez klientów CC możesz realnie spełnić?</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Co zrobić, gdy spełnienie warunku jest poza Twoimi możliwościami?</div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Wnioski</div>
+      <div class="insight-card"><div class="insight-icon">⚡</div><div class="insight-text"><strong>Warunek = zobowiązanie:</strong> Gdy klient stawia warunek i Ty go spełniasz — kupuje. Prosto i elegancko. Klient sam sobie wyznaczył próg zakupu.</div></div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie: 15 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">Lista warunków i odpowiedzi</div>
+        <div class="exp-body">Wypisz 6 najczęstszych warunków jakie stawiają klienci CC. Dla każdego sformułuj pytanie w stylu „gdyby... to czy...". Przetestuj w parach.</div>
+      </div>`
+  },
+  {
+    id: 14,
+    num: "14",
+    name: "Nagłe odwrócenie",
+    group: 3,
+    groupName: "Zamknięcia właściwe",
+    tagline: "Klient podaje powód NIE. Ty używasz go jako powodu do KUPIENIA. Wymaga odwagi.",
+    exp: `
+      <div class="content-label">Scenka — odwrócenie w akcji</div>
+      <div class="dialog">
+        <div class="dialog-line"><div class="dialog-role klient">KLIENT</div><div class="dialog-bubble klient">„Mam teraz zbyt mało czasu na networking."</div></div>
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„Właśnie dlatego powinien Pan dołączyć."</div></div>
+        <div class="dialog-line"><div class="dialog-role klient">KLIENT</div><div class="dialog-bubble klient">„Słucham? Przecież powiedziałem, że nie mam czasu..."</div></div>
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„Rozumiem. Właśnie dlatego. CC działa dla Pana wtedy, gdy Pan śpi — Pańska sieć pracuje, rekomenduje, przesyła kontakty. Im mniej czasu ma Pan na aktywne pozyskiwanie — tym więcej CC robi za Pana."</div></div>
+      </div>`,
+    ref: `
+      <div class="content-label">Refleksja</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Co poczułeś grając klienta, gdy usłyszałeś „właśnie dlatego"? Zaskoczenie? Otwarcie?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Jakie powody NIE klientów CC dają się „odwrócić"? Jakie nie?</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Kiedy ta technika może być odebrana jako manipulacja? Jak tego uniknąć?</div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Wnioski</div>
+      <div class="insight-card"><div class="insight-icon">🌀</div><div class="insight-text"><strong>Logika przez zaskoczenie:</strong> Klient oczekuje zgody na powód NIE. Dostajesz odwrócenie — mózg automatycznie szuka uzasadnienia. Jeśli Twoje wytłumaczenie jest prawdziwe — działa. Gdy obiekcja jest bardziej złożona, sięgnij po <span class="tech-link" onclick="openTechnique(11)">↗ #12 Załóżmy że</span> lub <span class="tech-link" onclick="openTechnique(12)">↗ #13 Ostry kąt</span>.</div></div>
+      <div class="script-box"><div class="speaker">Najczęstsze odwrócenia CC</div>„Za mało czasu" → „Właśnie dlatego — CC pracuje za Pana"<br>„Za drogo" → „Właśnie dlatego — jeden kontrakt zwraca inwestycję"<br>„Nie wierzę w networking" → „Właśnie dlatego powinien Pan zobaczyć jak to wygląda u nas"</div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie: 20 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">Odwrócenia dla CC</div>
+        <div class="exp-body">Jako grupa: wypisz 8 najczęstszych powodów NIE od klientów CC. Dla każdego sformułuj autentyczne odwrócenie. Przetestuj w parach — klient ocenia czy brzmi prawdziwie czy manipulacyjnie.</div>
+      </div>`
+  },
+  {
+    id: 15,
+    num: "15",
+    name: "Zamiana miejscami",
+    group: 4,
+    groupName: "Trudne sytuacje",
+    tagline: "Klient milczy. Pytasz go, żeby postawił się na Twoim miejscu — i sam znajdzie rozwiązanie.",
+    exp: `
+      <div class="content-label">Scenka</div>
+      <div class="dialog">
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„Panie Robercie, mogę Pana o coś poprosić? Proszę sobie wyobrazić, że jest Pan na moim miejscu. Rozmawia Pan z bardzo inteligentnym prezesem, który doskonale rozumie wartość networkingu na tym poziomie — ale coś go powstrzymuje. Pan nie chce mi powiedzieć co. Jakby Pan wybrnął z tej sytuacji?"</div></div>
+        <div class="dialog-line"><div class="dialog-role klient">KLIENT</div><div class="dialog-bubble klient">„No... chodzi o to, że mój partner ma już BNI i nie wiem, czy nie byłoby to powielanie."</div></div>
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„Rozumiem. A gdybyśmy to rozwiązali — czyli pokazali Panu, że CC i BNI to dwa różne poziomy relacji — wziąłby Pan?"</div></div>
+      </div>`,
+    ref: `
+      <div class="content-label">Refleksja</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Dlaczego klient odkrywa prawdziwy powód dopiero po zmianie perspektywy?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Jakie jest ryzyko tej techniki? Kiedy klient może poczuć się „przechwycony"?</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Jak możesz połączyć tę technikę z ostrym kątem na końcu? <span class="tech-link" onclick="openTechnique(12)">↗ Technika #13</span></div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Wnioski</div>
+      <div class="insight-card"><div class="insight-icon">🪞</div><div class="insight-text"><strong>Empatia jako narzędzie:</strong> Pytając klienta o Twoją perspektywę — zmuszasz go do wyjścia z własnych obronnych pozycji. Nagle rozumie Twój dylemat i chce pomóc.</div></div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie: 15 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">Trening zamiany miejsc</div>
+        <div class="exp-body">W parach: jeden gra klienta z ukrytym powodem NIE (losowo wybranym). Dyrektor CC ma dojść do prawdziwego powodu używając wyłącznie techniki zamiany miejsc.</div>
+      </div>`
+  },
+  {
+    id: 16,
+    num: "16",
+    name: "Zamknięcie muszę przemyśleć",
+    group: 4,
+    groupName: "Trudne sytuacje",
+    tagline: "Najczęstszy sabotaż sprzedaży. Nauczysz się go rozkładać na czynniki pierwsze.",
+    exp: `
+      <div class="content-label">Scenka krok po kroku</div>
+      <div class="dialog">
+        <div class="dialog-line"><div class="dialog-role klient">KLIENT</div><div class="dialog-bubble klient">„Muszę to przemyśleć."</div></div>
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„Oczywiście. To ważna decyzja. Ma Pan oczywiście dobry powód by to przemyśleć. Czy mógłbym wiedzieć jaki? Czy chodzi o cenę?"</div></div>
+        <div class="dialog-line"><div class="dialog-role klient">KLIENT</div><div class="dialog-bubble klient">„Nie, nie o cenę."</div></div>
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„Skoro nie o cenę — to mogę zapytać o co? [cisza]"</div></div>
+        <div class="dialog-line"><div class="dialog-role klient">KLIENT</div><div class="dialog-bubble klient">„No... tak naprawdę nie wiem czy mój wspólnik się zgodzi."</div></div>
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„Rozumiem. A gdybyśmy zaplanowali wspólne spotkanie — Pana, Pańskiego wspólnika i mnie — żebyście obaj mieli pełny obraz?"</div></div>
+      </div>`,
+    ref: `
+      <div class="content-label">Refleksja</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Co się kryje za „muszę przemyśleć"? Jakie 3 prawdziwe powody najczęściej odkrywasz?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Jak długo milczysz po pytaniu „o co chodzi"? Dlaczego cisza jest tu kluczowa?</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Co różni klienta, który „musi przemyśleć" i wróci, od tego który nie wróci nigdy?</div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Wnioski</div>
+      <div class="insight-card"><div class="insight-icon">🔎</div><div class="insight-text"><strong>„Przemyśleć" to zasłona:</strong> Za tym zdaniem zawsze kryje się konkretna bariera. Twoja praca to ją znaleźć — przez pytania i ciszę. Gdy ją odkryjesz, użyj <span class="tech-link" onclick="openTechnique(12)">↗ #13 Ostry kąt</span>.</div></div>
+      <div class="insight-card"><div class="insight-icon">🤫</div><div class="insight-text"><strong>Moc ciszy:</strong> Po pytaniu „o co chodzi" — nie mów nic. Pierwszy kto się odezwie — przegrywa. Trenuj tolerancję na ciszę — ta sama zasada działa w <span class="tech-link" onclick="openTechnique(16)">↗ #17 Nagła śmierć</span>.</div></div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie: 20 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">5 minut ciszy</div>
+        <div class="exp-body">W parach: klient mówi „muszę przemyśleć". Dyrektor CC zadaje pytanie „o co chodzi?" i milczy. Klient musi milczeć przez 30 sekund. Kto odezwie się pierwszy? Jak długo możesz wytrzymać ciszę?</div>
+        <ul class="exp-steps">
+          <li>Zmierz jak długo trwa Twoja tolerancja na ciszę</li>
+          <li>Powtórz ćwiczenie aż przezwyciężysz dyskomfort</li>
+          <li>Zapamiętaj: profesjonalna cisza jest oznaką pewności siebie</li>
+        </ul>
+      </div>`
+  },
+  {
+    id: 17,
+    num: "17",
+    name: "Nagła śmierć (ultimatum)",
+    group: 4,
+    groupName: "Trudne sytuacje",
+    tagline: "Klient od miesięcy nie mówi ani tak, ani nie. Czas na decyzję — teraz lub nigdy.",
+    exp: `
+      <div class="content-label">Scenka — ultimatum z klasą</div>
+      <div class="scenario-box"><h4>Kontekst</h4><p>3. spotkanie z tym samym klientem w ciągu 6 tygodni. Zawsze „prawie". Nigdy decyzja.</p></div>
+      <div class="script-box">
+        <div class="speaker">Nagła śmierć</div>
+        „Panie Adamie, wiele o tym myślałem. Rozmawiamy już trzeci raz i widzę, że Pan widzi wartość. Ale muszę być z Panem szczery — albo to ma dla Pana sens, albo nie. Podejmijmy decyzję dziś. [kładziesz umowę] Wiem jak cenny jest Pański czas — i mój też."
+      </div>
+      <div class="scenario-box"><h4>Potem — cisza</div><p>Nie mów nic. Pierwszy kto się odezwie — przegrywa. W 59% przypadków klient podpisuje.</p></div>`,
+    ref: `
+      <div class="content-label">Refleksja</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Co czujesz kładąc umowę na stół i milcząc? Skąd ten dyskomfort?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Co się dzieje w 41% przypadków gdy klient mówi NIE? Czy to porażka?</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Kiedy jest właściwy moment na nagłą śmierć? Po ilu spotkaniach / tygodniach?</div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Wnioski</div>
+      <div class="insight-card"><div class="insight-icon">⚰️</div><div class="insight-text"><strong>Wolność przez decyzję:</strong> W obu przypadkach (TAK lub NIE) jesteś wolny. Koniec zombie-klientów. Wreszcie wiesz gdzie stoisz. Zanim użyjesz tej techniki — upewnij się, że wyczerpałeś <span class="tech-link" onclick="openTechnique(15)">↗ #16 Muszę przemyśleć</span>.</div></div>
+      <div class="insight-card"><div class="insight-icon">💪</div><div class="insight-text"><strong>59% mówi TAK:</strong> Niezdecydowani klienci często potrzebują tylko zewnętrznej presji, żeby podjąć decyzję, którą już podjęli w środku. Alternatywą jest delikatniejsze <span class="tech-link" onclick="openTechnique(17)">↗ #18 Odebranie produktu</span>.</div></div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie: 15 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">Lista zombie-klientów</div>
+        <div class="exp-body">Każdy uczestnik wypisuje klientów, z którymi rozmawia ponad 4 tygodnie bez decyzji. Dla każdego: plan nagłej śmierci — kiedy, co powiesz, jak zakończysz rozmowę niezależnie od wyniku.</div>
+      </div>`
+  },
+  {
+    id: 18,
+    num: "18",
+    name: "Odebranie produktu",
+    group: 4,
+    groupName: "Trudne sytuacje",
+    tagline: "Sugerujesz, że CC może nie być dla tego klienta — i nagle chce dołączyć bardziej niż kiedykolwiek.",
+    exp: `
+      <div class="content-label">Scenka — niedostępność tworzy pożądanie</div>
+      <div class="dialog">
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„Panie Tomku, muszę być z Panem szczery. Nasza społeczność jest selektywna — przyjmujemy tylko prezesów, których profile są komplementarne. Nie jestem pewien, czy mamy teraz odpowiednie miejsce dla Pana profilu. Musiałbym sprawdzić u naszego zarządu."</div></div>
+        <div class="dialog-line"><div class="dialog-role klient">KLIENT</div><div class="dialog-bubble klient">„Poczekaj — jak to? Ja myślałem, że mogę dołączyć..."</div></div>
+        <div class="dialog-line"><div class="dialog-role ty">TY</div><div class="dialog-bubble ty">„Może tak. Chcę się upewnić, że to będzie dla Pana najlepsze miejsce i że Pański profil uzupełni nasz skład."</div></div>
+      </div>`,
+    ref: `
+      <div class="content-label">Refleksja</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Co poczułeś jako klient słysząc „nie jestem pewien czy możesz dołączyć"?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Dlaczego CC naprawdę może stosować tę technikę autentycznie? (Selektywność jest wartością)</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Kiedy ta technika jest autentyczna, a kiedy manipulacyjna?</div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Wnioski</div>
+      <div class="insight-card"><div class="insight-icon">🏰</div><div class="insight-text"><strong>Ekskluzywność CC:</strong> The Company to nie produkt masowy. Selektywność jest prawdziwą wartością. Mówiąc klientowi, że „musi przejść kwalifikację" — nie kłamiesz. I budujesz status.</div></div>
+      <div class="insight-card"><div class="insight-icon">🧠</div><div class="insight-text"><strong>Paradoks reaktancji:</strong> Ludzie chcą tego, czego nie mogą mieć. Ograniczony dostęp = wyższa wartość postrzegana.</div></div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie: 15 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">Skrypt selektywności CC</div>
+        <div class="exp-body">Napisz autentyczny skrypt podkreślający selektywność CC, który możesz stosować naturalnie. Musi być prawdziwy — oparty na realnych kryteriach przyjęcia. Przetestuj na partnerze.</div>
+      </div>`
+  },
+  {
+    id: 19,
+    num: "19",
+    name: "Zamknięcie na szczeniaczka",
+    group: 4,
+    groupName: "Trudne sytuacje",
+    tagline: "Pozwalasz klientowi doświadczyć CC — zanim podejmie decyzję. Doświadczenie sprzedaje.",
+    exp: `
+      <div class="content-label">Strategia próbki doświadczenia</div>
+      <div class="scenario-box"><h4>Technika</h4><p>Zapraszasz niezdecydowanego klienta na pierwsze spotkanie CC jako gość — bez zobowiązań. Dajesz mu „psa do sprawdzenia przez weekend".</p></div>
+      <div class="script-box">
+        <div class="speaker">Zaproszenie próbne</div>
+        „Panie Jacku, rozumiem Pańskie wahanie — nie znam nikogo, kto decyduje o poważnych inwestycjach bez ich ocenienia. Dlatego zapraszam Pana na jedno spotkanie jako mój gość. Zobaczy Pan 25 prezesów w akcji, poczuje atmosferę i zdecyduje. Bez presji, bez umowy. Kiedy jest Pan wolny w środę rano?"
+      </div>`,
+    ref: `
+      <div class="content-label">Refleksja</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Ilu klientów zaprosiłeś na spotkanie CC jako gości? Jaki procent dołączył po tym doświadczeniu?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Co sprawia, że to spotkanie samo „sprzedaje" — bez Twojej aktywności?</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Jak możesz zwiększyć jakość doświadczenia gościa na pierwszym spotkaniu?</div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Wnioski</div>
+      <div class="insight-card"><div class="insight-icon">🐶</div><div class="insight-text"><strong>CC ma idealny produkt do tej techniki:</strong> Spotkanie jest doświadczeniem wielozmysłowym. Energia, relacje, profesjonalizm — wszystko działa na klienta przed i bez Twojego słowa.</div></div>
+      <div class="insight-card"><div class="insight-icon">🎯</div><div class="insight-text"><strong>Strategia po spotkaniu:</strong> Nie czekaj na klienta. Jeszcze na spotkaniu, przy kawie, zapytaj: „I jak Pan to ocenia? Co Pan widzi dla siebie w tej grupie?"</div></div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie: 20 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">Plan zaproszenia gości</div>
+        <div class="exp-body">Każdy dyrektor CC planuje: ilu gości może zaprosić w tym miesiącu? Jak przygotuje ich wizytę? Co powie im przed, w trakcie i po? Podziel się planem z grupą.</div>
+        <ul class="exp-steps">
+          <li>Wypisz 3 konkretnych kandydatów na gości w ciągu 30 dni</li>
+          <li>Napisz SMS zapraszający — maks. 3 zdania</li>
+          <li>Zaplanuj co powiesz podczas spotkania (gorący punkt gościa)</li>
+          <li>Ustal pytanie zamykające po spotkaniu</li>
+        </ul>
+      </div>`
+  },
+  {
+    id: 20,
+    num: "20",
+    name: "Zamknięcie na podsumowanie",
+    group: 3,
+    groupName: "Zamknięcia właściwe",
+    tagline: "Na końcu prezentacji — zsumuj wszystko i zaproś. Potężne i eleganckie.",
+    exp: `
+      <div class="content-label">Scenka finałowa</div>
+      <div class="scenario-box"><h4>Kontekst</h4><p>Koniec 30-minutowej prezentacji CC dla Prezesa firmy dystrybucyjnej. Rozmawialiście o skalowaniu, ekspansji i jego problemach z pozyskiwaniem klientów.</p></div>
+      <div class="script-box">
+        <div class="speaker">Zamknięcie podsumowujące</div>
+        „Panie Marku, podsumujmy co omówiliśmy. Mówił Pan o trzech rzeczach: że potrzebuje Pan skalowalnego źródła rekomendacji, że planuje Pan wejście na rynek czeski w przyszłym roku i że brakuje Panu regularnego kontaktu z prezesami na Pańskim poziomie. CC odpowiada na każdą z tych potrzeb. Czy o czymś zapomniałem? Nie? To może Pan po prostu dołączy."
+      </div>`,
+    ref: `
+      <div class="content-label">Refleksja</div>
+      <div class="reflection-questions">
+        <div class="rq-item"><div class="rq-num">1.</div><div class="rq-text">Co się dzieje z klientem, kiedy słyszy swoje własne słowa w podsumowaniu?</div></div>
+        <div class="rq-item"><div class="rq-num">2.</div><div class="rq-text">Dlaczego pytanie „czy o czymś zapomniałem?" jest tak ważne przed zamknięciem?</div></div>
+        <div class="rq-item"><div class="rq-num">3.</div><div class="rq-text">Jak połączyć to zamknięcie z zapraszającym? <span class="tech-link" onclick="openTechnique(9)">↗ Technika #10</span></div></div>
+      </div>`,
+    con: `
+      <div class="content-label">Wnioski — synteza całego szkolenia</div>
+      <div class="insight-card"><div class="insight-icon">🏆</div><div class="insight-text"><strong>Najlepsza technika zależy od klienta:</strong> Nie ma jednej magicznej. Masz teraz 20 narzędzi — stosuj 3-5 w każdej rozmowie. Zacznij od zamknięcia zapraszającego, kończ na podsumowaniu.</div></div>
+      <div class="insight-card"><div class="insight-icon">🔄</div><div class="insight-text"><strong>Naturalna sekwencja finałowa:</strong> Podsumowanie (#20) działa najlepiej po serii TAK (<span class="tech-link" onclick="openTechnique(8)">↗ #09</span>) i gorącym punkcie (<span class="tech-link" onclick="openTechnique(5)">↗ #06</span>). Zamknij zaproszeniem (<span class="tech-link" onclick="openTechnique(9)">↗ #10</span>).</div></div>
+      <div class="insight-card"><div class="insight-icon">🎯</div><div class="insight-text"><strong>Jedno zadanie na jutro:</strong> Wybierz 3 techniki, które dzisiaj najbardziej rezonowały z Tobą. Jutro zastosuj je w minimum 2 rozmowach z klientami.</div></div>`,
+    prac: `
+      <div class="timer-badge">⏱ Ćwiczenie finałowe: 30 minut</div>
+      <div class="experiment-task">
+        <div class="exp-title">Symulacja kompleksowej rozmowy</div>
+        <div class="exp-body">W grupach 3-osobowych: jeden Dyrektor CC prowadzi pełną prezentację (15 min) korzystając z minimum 5 technik. Dwóch obserwatorów zaznacza na kartce każdą użytą technikę i ocenia jej skuteczność.</div>
+        <ul class="exp-steps">
+          <li>Zaplanuj które 5+ technik użyjesz i w jakiej kolejności</li>
+          <li>Poprowadź prezentację — obserwatorzy nie przerywają</li>
+          <li>Po prezentacji: 5 minut feedbacku od obserwatorów</li>
+          <li>Zamieńcie role — każdy ma swoje 15 minut</li>
+          <li>Na koniec: każdy wybiera SWOJE 3-5 technik na przyszły tydzień</li>
+        </ul>
+      </div>
+      <div class="scenario-box"><h4>🏁 Kontrakt z samym sobą</h4><p>Każdy uczestnik zapisuje: (1) 3 techniki, które będzie stosować od jutra, (2) konkretnych 3 klientów, z którymi je wypróbuje, (3) data check-in za 2 tygodnie — jak poszło?</p></div>`
+  }
+];
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let currentIndex = 0;
+let completed = new Set();
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+function goToIntro() {
+  document.getElementById('app').classList.remove('active');
+  document.getElementById('value').classList.remove('active');
+  document.getElementById('completion').classList.remove('active');
+  document.getElementById('intro').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function showValueScreen() {
+  document.getElementById('intro').classList.remove('active');
+  document.getElementById('value').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function startApp() {
+  document.getElementById('intro').classList.remove('active');
+  document.getElementById('value').classList.remove('active');
+  document.getElementById('completion').classList.remove('active');
+  document.getElementById('app').classList.add('active');
+  buildGrid();
+  showOverview();
+}
+
+function buildGrid() {
+  const grid = document.getElementById('techniques-grid');
+  const groupNames = ['', 'Otwierające', 'W trakcie prezentacji', 'Zamknięcia właściwe', 'Trudne sytuacje'];
+  grid.innerHTML = techniques.map(t => `
+    <div class="technique-card ${completed.has(t.id) ? 'completed' : ''}" onclick="openTechnique(${t.id - 1})">
+      <div class="tc-num">Technika ${t.num}</div>
+      <div class="tc-name">${t.name}</div>
+      <div class="group-tag group-${t.group}">${t.groupName}</div>
+    </div>
+  `).join('');
+}
+
+function showOverview() {
+  document.getElementById('overview').style.display = 'block';
+  document.getElementById('detail').style.display = 'none';
+  buildGrid();
+}
+
+function openTechnique(index) {
+  currentIndex = index;
+  renderDetail();
+  document.getElementById('overview').style.display = 'none';
+  document.getElementById('detail').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+function renderDetail() {
+  const t = techniques[currentIndex];
+  document.getElementById('detail-num').textContent = `TECHNIKA ${t.num} — ${t.groupName.toUpperCase()}`;
+  document.getElementById('detail-title').innerHTML = `<strong>${t.name}</strong>`;
+  document.getElementById('detail-tagline').textContent = t.tagline;
+  document.getElementById('tab-exp').innerHTML = t.exp;
+  document.getElementById('tab-ref').innerHTML = t.ref;
+  document.getElementById('tab-con').innerHTML = t.con;
+  document.getElementById('tab-prac').innerHTML = t.prac;
+  document.getElementById('current-num').textContent = currentIndex + 1;
+  document.getElementById('progress-fill').style.width = `${((currentIndex + 1) / 20) * 100}%`;
+  document.getElementById('done-check').checked = completed.has(t.id);
+  document.getElementById('btn-prev').style.visibility = currentIndex === 0 ? 'hidden' : 'visible';
+  document.getElementById('btn-next').textContent = currentIndex === 19 ? 'Zakończ szkolenie →' : 'Następna →';
+  switchTab('exp');
+}
+
+function switchTab(tabId) {
+  document.querySelectorAll('.kolb-tab').forEach((t, i) => {
+    t.classList.toggle('active', ['exp','ref','con','prac'][i] === tabId);
+  });
+  document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+}
+
+function navigate(dir) {
+  const next = currentIndex + dir;
+  if (next < 0) return;
+  if (next >= 20) {
+    document.getElementById('app').classList.remove('active');
+    document.getElementById('completion').classList.add('active');
+    return;
+  }
+  currentIndex = next;
+  renderDetail();
+  window.scrollTo(0, 0);
+}
+
+function markDone() {
+  const t = techniques[currentIndex];
+  if (document.getElementById('done-check').checked) {
+    completed.add(t.id);
+  } else {
+    completed.delete(t.id);
+  }
+}
+</script>
+</body>
+</html>
