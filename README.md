@@ -1,0 +1,1 @@
+# zamykanie-sprzedazy
